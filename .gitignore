@@ -1,0 +1,22 @@
+# IDEA
+*.iml
+*.iws
+
+.idea/
+
+# Maven
+target/
+log/
+
+# packaged files
+*.jar
+*.war
+*.ear
+
+# eclipse files
+.classpath
+.project
+.settings/
+
+# Darwin
+.DS_Store
