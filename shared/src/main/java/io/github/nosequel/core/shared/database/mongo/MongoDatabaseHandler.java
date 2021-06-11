@@ -130,16 +130,14 @@ public class MongoDatabaseHandler implements DatabaseHandler {
     /**
      * Delete a singular json object from the database.
      *
-     * @param object         the object to update
      * @param collectionName the name of the collection to delete it from
      * @param id             the identifier of the object
      * @return whether deleting was successful or not
      */
     @Override
-    public CompletableFuture<Boolean> delete(JsonObject object, String collectionName, String id) {
+    public CompletableFuture<Boolean> delete(String collectionName, String id) {
         return CompletableFuture.supplyAsync(() -> {
             final MongoCollection<Document> collection = this.getCollection(collectionName);
-
             return collection.deleteOne(Filters.eq("_id", id)).wasAcknowledged();
         });
     }

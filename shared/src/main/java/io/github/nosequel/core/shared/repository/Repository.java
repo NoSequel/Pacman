@@ -1,6 +1,5 @@
 package io.github.nosequel.core.shared.repository;
 
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
@@ -33,17 +32,14 @@ public interface Repository<T> {
      *
      * @param value the value to update inside of the repository
      * @param id    the identifier of the value
-     * @return whether it has updated successfully
      */
-    boolean update(T value, String id);
+    void update(T value, String id);
 
     /**
      * Delete an element from the repository
      *
-     * @param value the value to delete from the repository
      * @param id    the identifier of the value
-     * @return whether it was deleted successfully
      */
-    boolean delete(T value, String id);
+    void delete(String id);
 
 }
