@@ -3,7 +3,9 @@ package io.github.nosequel.core.bukkit;
 import io.github.nosequel.core.bukkit.logger.BukkitLogger;
 import io.github.nosequel.core.bukkit.prompt.BukkitChatPromptHandler;
 import io.github.nosequel.core.bukkit.prompt.ChatPromptListener;
+import io.github.nosequel.core.bukkit.rank.command.RankCommand;
 import io.github.nosequel.core.shared.CoreAPI;
+import me.blazingtide.zetsu.Zetsu;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -20,8 +22,11 @@ public class BukkitCorePlugin extends JavaPlugin {
 
         // register listeners
         this.registerListeners(
-                new ChatPromptListener(this.coreAPI.getPromptHandler())
+                new ChatPromptListener()
         );
+
+        // register commands
+        new Zetsu(this).registerCommands(new RankCommand());
     }
 
     @Override

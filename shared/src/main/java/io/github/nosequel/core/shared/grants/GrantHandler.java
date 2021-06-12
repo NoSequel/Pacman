@@ -15,6 +15,10 @@ public class GrantHandler {
     private final GrantRepository repository;
     private final Set<Grant> grants = new HashSet<>();
 
+    public void load() {
+        this.repository.retrieve().thenAccept(grants::addAll);
+    }
+
     /**
      * Register a new grant to the grant handler
      *

@@ -4,14 +4,13 @@ import io.github.nosequel.core.bukkit.rank.menu.editor.RankEditorMenu;
 import io.github.nosequel.core.shared.prompt.ChatPrompt;
 import io.github.nosequel.core.shared.prompt.ChatPromptResult;
 import io.github.nosequel.core.shared.rank.Rank;
-import io.github.nosequel.core.shared.rank.RankHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
-public class RankCreatePrompt implements ChatPrompt<RankHandler> {
+public class RankPrefixPrompt implements ChatPrompt<Rank> {
 
     /**
      * Get the prompt text to send to the player
@@ -22,31 +21,28 @@ public class RankCreatePrompt implements ChatPrompt<RankHandler> {
      * @return the text
      */
     @Override
-    public String getPromptText(UUID player, RankHandler value) {
-        return ChatColor.YELLOW + "Please type a name for the rank to start with the process.";
+    public String getPromptText(UUID player, Rank value) {
+        return ChatColor.YELLOW + "Type the prefix to update the rank's prefix value to in the chat.";
     }
 
     /**
      * Handle the input of a {@link ChatPrompt} object
      *
-     * @param uniqueId  the player ot handle it for
-     * @param message the message to handle
-     * @param value   the value to handle it for
+     * @param uniqueId the player ot handle it for
+     * @param message  the message to handle
+     * @param value    the value to handle it for
      * @return the result of the chat prompt
      */
     @Override
-    public ChatPromptResult handleInput(UUID uniqueId, String message, RankHandler value) {
+    public ChatPromptResult handleInput(UUID uniqueId, String message, Rank value) {
         final Player player = Bukkit.getPlayer(uniqueId);
-        final Rank rank = new Rank(UUID.randomUUID(), message);
 
-        if(player != null) {
-            player.sendMessage(ChatColor.YELLOW + "You have created a new rank with the name " + message + ".");
-            player.sendMessage(ChatColor.YELLOW + "Opening a menu so you can edit this rank.");
-
-            new RankEditorMenu(player, rank).updateMenu();
+        if (player != null) {
+            player.sendMessage(ChatColor.YELLOW + "You updated the prefix of the rank to " + message + ".");
+            new RankEditorMenu(player, value).updateMenu();
         }
 
-        value.register(rank);
+        value.setPrefix(message);
 
         return new ChatPromptResult(
                 "",

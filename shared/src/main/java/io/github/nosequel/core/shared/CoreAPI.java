@@ -39,6 +39,10 @@ public class CoreAPI {
         this.databaseHandler = new MongoDatabaseHandler("127.0.0.1", 27017, "pacman", "", "", false);
         this.rankHandler = new RankHandler(new RankRepository(this.databaseHandler));
         this.grantHandler = new GrantHandler(new GrantHandler.GrantRepository(this.databaseHandler));
+
+        // load all data
+        this.rankHandler.load();
+        this.grantHandler.load();
     }
 
     public void disable() {
