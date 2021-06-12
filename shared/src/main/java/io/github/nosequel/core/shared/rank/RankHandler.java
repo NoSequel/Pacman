@@ -1,6 +1,7 @@
 package io.github.nosequel.core.shared.rank;
 
 import io.github.nosequel.core.shared.rank.metadata.Metadata;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Getter
 @RequiredArgsConstructor
 public class RankHandler {
 
