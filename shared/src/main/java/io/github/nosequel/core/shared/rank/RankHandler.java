@@ -1,6 +1,7 @@
 package io.github.nosequel.core.shared.rank;
 
 import io.github.nosequel.core.shared.rank.metadata.Metadata;
+import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,9 +9,15 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 public class RankHandler {
 
+    private final RankRepository repository;
     private final List<Rank> ranks = new ArrayList<>();
+
+    public void load() {
+        this.repository.retrieve().thenAccept(this.ranks::addAll);
+    }
 
     /**
      * Register a new rank to the {@link RankHandler#ranks} list
@@ -19,7 +26,19 @@ public class RankHandler {
      */
     public Rank register(Rank rank) {
         this.ranks.add(rank);
+        this.repository.update(rank, rank.getUniqueId().toString());
+
         return rank;
+    }
+
+    /**
+     * Delete a rank from the rank handler
+     *
+     * @param rank the rank to delete
+     */
+    public void delete(Rank rank) {
+        this.ranks.remove(rank);
+        this.repository.delete(rank.getUniqueId().toString());
     }
 
     /**

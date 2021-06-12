@@ -30,17 +30,15 @@ public interface DatabaseHandler {
      * @param object         the object to update
      * @param collectionName the name of the collection to update it in
      * @param id             the identifier of the object
-     * @return whether updating was successful or not
      */
-    CompletableFuture<Boolean> update(JsonObject object, String collectionName, String id);
+    void update(JsonObject object, String collectionName, String id);
 
     /**
      * Delete a singular json object from the database.
      *
      * @param collectionName the name of the collection to delete it from
      * @param id             the identifier of the object
-     * @return whether deleting was successful or not
      */
-    CompletableFuture<Boolean> delete(String collectionName, String id);
+    void delete(String collectionName, String id);
 
 }

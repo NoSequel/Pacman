@@ -6,13 +6,6 @@ import java.util.concurrent.CompletableFuture;
 public interface Repository<T> {
 
     /**
-     * Get the cache of the repository
-     *
-     * @return the cache
-     */
-    Set<T> getCache();
-
-    /**
      * Retrieve all objects inside of the repository
      *
      * @return the set of the objects inside of the repository
@@ -38,7 +31,7 @@ public interface Repository<T> {
     /**
      * Delete an element from the repository
      *
-     * @param id    the identifier of the value
+     * @param id the identifier of the value
      */
     void delete(String id);
 

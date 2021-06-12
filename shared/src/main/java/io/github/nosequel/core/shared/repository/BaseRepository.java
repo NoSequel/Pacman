@@ -18,8 +18,6 @@ public abstract class BaseRepository<T> implements Repository<T> {
     private final String collectionName;
     private final DatabaseHandler handler;
 
-    private final Set<T> cache = new HashSet<>();
-
     public abstract Class<T> getType();
 
     /**
@@ -36,8 +34,8 @@ public abstract class BaseRepository<T> implements Repository<T> {
                 for (JsonObject jsonObject : handler.retrieveAll(this.collectionName).get()) {
                     set.add(CoreConstants.GSON.fromJson(jsonObject, this.getType()));
                 }
-            } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
+            } catch (InterruptedException | ExecutionException exception) {
+                exception.printStackTrace();
             }
 
             return set;
@@ -55,8 +53,8 @@ public abstract class BaseRepository<T> implements Repository<T> {
         return CompletableFuture.supplyAsync(() -> {
             try {
                 return CoreConstants.GSON.fromJson(handler.retrieveOne(id, this.collectionName).get(), this.getType());
-            } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
+            } catch (InterruptedException | ExecutionException exception) {
+                exception.printStackTrace();
             }
 
             return null;

@@ -14,6 +14,7 @@ import org.bson.Document;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ForkJoinPool;
 
 public class MongoDatabaseHandler implements DatabaseHandler {
 
@@ -112,18 +113,17 @@ public class MongoDatabaseHandler implements DatabaseHandler {
      * @param object         the object to update
      * @param collectionName the name of the collection to update it in
      * @param id             the identifier of the object
-     * @return whether updating was successful or not
      */
     @Override
-    public CompletableFuture<Boolean> update(JsonObject object, String collectionName, String id) {
-        return CompletableFuture.supplyAsync(() -> {
+    public void update(JsonObject object, String collectionName, String id) {
+        ForkJoinPool.commonPool().execute(() -> {
             final MongoCollection<Document> collection = this.getCollection(collectionName);
 
-            return collection.updateOne(
+            collection.updateOne(
                     Filters.eq("_id", id),
-                    new Document("\\$set", object),
+                    new Document("$set", Document.parse(object.toString())),
                     new UpdateOptions().upsert(true)
-            ).wasAcknowledged();
+            );
         });
     }
 
@@ -132,13 +132,9 @@ public class MongoDatabaseHandler implements DatabaseHandler {
      *
      * @param collectionName the name of the collection to delete it from
      * @param id             the identifier of the object
-     * @return whether deleting was successful or not
      */
     @Override
-    public CompletableFuture<Boolean> delete(String collectionName, String id) {
-        return CompletableFuture.supplyAsync(() -> {
-            final MongoCollection<Document> collection = this.getCollection(collectionName);
-            return collection.deleteOne(Filters.eq("_id", id)).wasAcknowledged();
-        });
+    public void delete(String collectionName, String id) {
+        CompletableFuture.runAsync(() -> this.getCollection(collectionName).deleteOne(Filters.eq("_id", id)));
     }
 }
