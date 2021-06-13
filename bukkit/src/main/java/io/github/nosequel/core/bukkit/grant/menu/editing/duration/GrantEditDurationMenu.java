@@ -1,10 +1,9 @@
-package io.github.nosequel.core.bukkit.grant.menu.duration;
+package io.github.nosequel.core.bukkit.grant.menu.editing.duration;
 
-import io.github.nosequel.core.bukkit.data.TemporaryPlayerObject;
 import io.github.nosequel.core.bukkit.grant.menu.BaseHeaderMenu;
-import io.github.nosequel.core.bukkit.grant.menu.GrantMenu;
-import io.github.nosequel.core.bukkit.grant.menu.reason.GrantReasonMenu;
-import io.github.nosequel.core.shared.rank.Rank;
+import io.github.nosequel.core.bukkit.grant.menu.duration.GrantDurationType;
+import io.github.nosequel.core.bukkit.grant.menu.editing.GrantEditingMenu;
+import io.github.nosequel.core.shared.grants.Grant;
 import io.github.nosequel.menu.Menu;
 import io.github.nosequel.menu.buttons.Button;
 import org.bukkit.ChatColor;
@@ -17,18 +16,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.function.Consumer;
 
-public class GrantDurationMenu extends BaseHeaderMenu {
+public class GrantEditDurationMenu extends BaseHeaderMenu {
 
     private long currentDuration;
+    private final Grant grant;
 
-    private final TemporaryPlayerObject target;
-    private final Rank rank;
-
-    public GrantDurationMenu(Player player, TemporaryPlayerObject target, Rank rank) {
+    public GrantEditDurationMenu(Player player, Grant grant) {
         super(player, "Grant time duration", 18);
-
-        this.target = target;
-        this.rank = rank;
+        this.grant = grant;
     }
 
     @Override
@@ -63,7 +58,8 @@ public class GrantDurationMenu extends BaseHeaderMenu {
             event.setCancelled(true);
             event.getWhoClicked().closeInventory();
 
-            new GrantReasonMenu(this.getPlayer(), this.target, this.rank, this.currentDuration).updateMenu();
+            this.grant.setStart(System.currentTimeMillis());
+            this.grant.setDuration(this.currentDuration);
         };
     }
 
@@ -79,8 +75,6 @@ public class GrantDurationMenu extends BaseHeaderMenu {
 
             this.getPlayer().closeInventory();
             this.currentDuration = -1L;
-
-            new GrantReasonMenu(this.getPlayer(), this.target, this.rank, this.currentDuration).updateMenu();
         };
     }
 
@@ -101,7 +95,7 @@ public class GrantDurationMenu extends BaseHeaderMenu {
      */
     @Override
     public Menu getPreviousMenu() {
-        return new GrantMenu(this.getPlayer(), this.target);
+        return new GrantEditingMenu(this.getPlayer(), this.grant);
     }
 
     /**

@@ -9,6 +9,7 @@ import io.github.nosequel.core.bukkit.grant.command.GrantCommand;
 import io.github.nosequel.core.bukkit.logger.BukkitLogger;
 import io.github.nosequel.core.bukkit.prompt.BukkitChatPromptHandler;
 import io.github.nosequel.core.bukkit.prompt.ChatPromptListener;
+import io.github.nosequel.core.bukkit.rank.command.ListCommand;
 import io.github.nosequel.core.bukkit.rank.command.RankCommand;
 import io.github.nosequel.core.shared.CoreAPI;
 import io.github.nosequel.menu.MenuHandler;
@@ -39,6 +40,7 @@ public class BukkitCorePlugin extends JavaPlugin {
 
         this.registerCommands(commandHandler, new RankCommand());
         this.registerCommands(commandHandler, new GrantCommand());
+        this.registerCommands(commandHandler, new ListCommand());
 
         // register menu handler
         new MenuHandler(this);

@@ -14,12 +14,11 @@ public class Expirable {
     private final UUID uniqueId;
     private final UUID executor;
 
-    private final String reason;
-
-    private final long start = System.currentTimeMillis();
-    private final long duration;
+    private long start = System.currentTimeMillis();
+    private long duration;
 
     private boolean expired = false;
+    private String reason;
 
     private ExpirationData expirationData;
 
