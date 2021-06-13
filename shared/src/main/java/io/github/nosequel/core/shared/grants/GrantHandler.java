@@ -19,6 +19,12 @@ public class GrantHandler {
         this.repository.retrieve().thenAccept(grants::addAll);
     }
 
+    public void save() {
+        for (Grant grant : this.grants) {
+            this.repository.update(grant, grant.getUniqueId().toString());
+        }
+    }
+
     /**
      * Register a new grant to the grant handler
      *
@@ -53,7 +59,7 @@ public class GrantHandler {
         }
 
         for (Rank rank : CoreAPI.getCoreAPI().getDefaultRanks()) {
-            this.register(new Grant(uuid, rank.getUniqueId(), UUID.randomUUID(), UUID.randomUUID(), "New player", null));
+            this.register(new Grant(uuid, rank.getUniqueId(), UUID.randomUUID(), UUID.randomUUID(), "New player"));
         }
 
         return this.findProminentGrant(uuid);

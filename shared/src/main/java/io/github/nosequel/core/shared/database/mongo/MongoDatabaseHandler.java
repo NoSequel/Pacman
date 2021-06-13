@@ -19,7 +19,6 @@ import java.util.concurrent.ForkJoinPool;
 public class MongoDatabaseHandler implements DatabaseHandler {
 
     private final MongoDatabase database;
-    private final Map<String, MongoCollection<Document>> collections = new HashMap<>();
 
     /**
      * Constructor to make a new mongo database handler
@@ -53,20 +52,6 @@ public class MongoDatabaseHandler implements DatabaseHandler {
     }
 
     /**
-     * Get a collection from the database.
-     *
-     * @param collectionName the name of the collection
-     * @return the found collection
-     */
-    private MongoCollection<Document> getCollection(String collectionName) {
-        if (!(this.collections.containsKey(collectionName))) {
-            this.collections.put(collectionName, this.database.getCollection(collectionName));
-        }
-
-        return this.collections.get(collectionName);
-    }
-
-    /**
      * Retrieve all json objects from the database
      *
      * @param collectionName the collection to find the objects in
@@ -75,9 +60,10 @@ public class MongoDatabaseHandler implements DatabaseHandler {
     @Override
     public CompletableFuture<Set<JsonObject>> retrieveAll(String collectionName) {
         return CompletableFuture.supplyAsync(() -> {
-            final MongoCollection<Document> collection = this.getCollection(collectionName);
+            final MongoCollection<Document> collection = database.getCollection(collectionName);
             final Set<JsonObject> objects = new HashSet<>();
 
+            System.out.println("hi");
             for (Document document : collection.find()) {
                 objects.add(CoreConstants.PARSER.parse(document.toJson()).getAsJsonObject());
             }
@@ -96,7 +82,7 @@ public class MongoDatabaseHandler implements DatabaseHandler {
     @Override
     public CompletableFuture<JsonObject> retrieveOne(String id, String collectionName) {
         return CompletableFuture.supplyAsync(() -> {
-            final MongoCollection<Document> collection = this.getCollection(collectionName);
+            final MongoCollection<Document> collection = database.getCollection(collectionName);
             final Document document = collection.find(Filters.eq("_id", id)).first();
 
             if (document == null) {
@@ -117,7 +103,7 @@ public class MongoDatabaseHandler implements DatabaseHandler {
     @Override
     public void update(JsonObject object, String collectionName, String id) {
         ForkJoinPool.commonPool().execute(() -> {
-            final MongoCollection<Document> collection = this.getCollection(collectionName);
+            final MongoCollection<Document> collection = database.getCollection(collectionName);
 
             collection.updateOne(
                     Filters.eq("_id", id),
@@ -135,6 +121,6 @@ public class MongoDatabaseHandler implements DatabaseHandler {
      */
     @Override
     public void delete(String collectionName, String id) {
-        CompletableFuture.runAsync(() -> this.getCollection(collectionName).deleteOne(Filters.eq("_id", id)));
+        CompletableFuture.runAsync(() -> database.getCollection(collectionName).deleteOne(Filters.eq("_id", id)));
     }
 }

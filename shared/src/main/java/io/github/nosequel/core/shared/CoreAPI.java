@@ -46,6 +46,8 @@ public class CoreAPI {
     }
 
     public void disable() {
+        this.rankHandler.save();
+        this.grantHandler.save();
     }
 
     /**

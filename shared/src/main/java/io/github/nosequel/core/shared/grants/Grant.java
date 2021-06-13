@@ -15,8 +15,6 @@ public class Grant extends Expirable {
     private final UUID target;
     private final UUID rankId;
 
-    private final String[] scopes;
-
     /**
      * Constructor to make a new grant object
      *
@@ -25,10 +23,9 @@ public class Grant extends Expirable {
      * @param uniqueId the unique identifier of the grant object
      * @param executor the executor of the grant
      * @param reason   the reason why the grant was issued
-     * @param scopes   the scopes the grant is valid in
      */
-    public Grant(UUID target, UUID rankId, UUID uniqueId, UUID executor, String reason, String[] scopes) {
-        this(target, rankId, uniqueId, executor, reason, scopes, -1L);
+    public Grant(UUID target, UUID rankId, UUID uniqueId, UUID executor, String reason) {
+        this(target, rankId, uniqueId, executor, reason, -1L);
     }
 
     /**
@@ -39,22 +36,13 @@ public class Grant extends Expirable {
      * @param uniqueId the unique identifier of the grant object
      * @param executor the executor of the grant
      * @param reason   the reason why the grant was issued
-     * @param scopes   the scopes the grant is valid in
      * @param duration the duration the grant object lasts
      */
-    public Grant(UUID target, UUID rankId, UUID uniqueId, UUID executor, String reason, String[] scopes, long duration) {
+    public Grant(UUID target, UUID rankId, UUID uniqueId, UUID executor, String reason, long duration) {
         super(uniqueId, executor, reason, duration);
 
         this.target = target;
         this.rankId = rankId;
-
-        if (scopes == null) {
-            this.scopes = new String[]{
-                    "all"
-            };
-        } else {
-            this.scopes = scopes;
-        }
     }
 
     /**

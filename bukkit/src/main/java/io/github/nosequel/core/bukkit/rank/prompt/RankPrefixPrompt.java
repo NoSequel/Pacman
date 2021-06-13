@@ -37,12 +37,12 @@ public class RankPrefixPrompt implements ChatPrompt<Rank> {
     public ChatPromptResult handleInput(UUID uniqueId, String message, Rank value) {
         final Player player = Bukkit.getPlayer(uniqueId);
 
+        value.setPrefix(message);
+
         if (player != null) {
             player.sendMessage(ChatColor.YELLOW + "You updated the prefix of the rank to " + message + ".");
             new RankEditorMenu(player, value).updateMenu();
         }
-
-        value.setPrefix(message);
 
         return new ChatPromptResult(
                 "",

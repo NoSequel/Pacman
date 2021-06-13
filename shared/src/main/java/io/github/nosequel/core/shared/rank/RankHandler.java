@@ -4,10 +4,7 @@ import io.github.nosequel.core.shared.rank.metadata.Metadata;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Getter
@@ -19,6 +16,23 @@ public class RankHandler {
 
     public void load() {
         this.repository.retrieve().thenAccept(this.ranks::addAll);
+    }
+
+    public void save() {
+        for (Rank rank : this.ranks) {
+            this.repository.update(rank, rank.getUniqueId().toString());
+        }
+    }
+
+    /**
+     * Get the list of the ranks
+     *
+     * @return the list
+     */
+    public List<Rank> getRanks() {
+        return this.ranks.stream()
+                .sorted(Comparator.comparingInt(rank -> -rank.getWeight()))
+                .collect(Collectors.toList());
     }
 
     /**
