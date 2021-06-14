@@ -3,6 +3,9 @@ package io.github.nosequel.core.bukkit;
 import io.github.nosequel.command.CommandHandler;
 import io.github.nosequel.command.adapter.TypeAdapter;
 import io.github.nosequel.command.bukkit.BukkitCommandHandler;
+import io.github.nosequel.config.Configuration;
+import io.github.nosequel.core.bukkit.config.BukkitConfigurationFile;
+import io.github.nosequel.core.bukkit.config.impl.MessageConfiguration;
 import io.github.nosequel.core.bukkit.data.TemporaryPlayerObject;
 import io.github.nosequel.core.bukkit.data.adapter.TemporaryPlayerTypeAdapter;
 import io.github.nosequel.core.bukkit.grant.command.GrantCommand;
@@ -13,20 +16,32 @@ import io.github.nosequel.core.bukkit.rank.command.ListCommand;
 import io.github.nosequel.core.bukkit.rank.command.RankCommand;
 import io.github.nosequel.core.shared.CoreAPI;
 import io.github.nosequel.menu.MenuHandler;
-import org.bukkit.OfflinePlayer;
+import lombok.SneakyThrows;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
 
 public class BukkitCorePlugin extends JavaPlugin {
 
     private final CoreAPI coreAPI = new CoreAPI();
 
+    @SneakyThrows
     @Override
     public void onEnable() {
         this.coreAPI.setPromptHandler(new BukkitChatPromptHandler());
         this.coreAPI.setLogger(new BukkitLogger());
 
         this.coreAPI.enable();
+
+        // register configurations
+        final File file = new File(this.getDataFolder(), "lang.yml");
+
+        this.createConfiguration(new MessageConfiguration(new BukkitConfigurationFile(
+                file,
+                YamlConfiguration.loadConfiguration(file)
+        )));
 
         // register listeners
         this.registerListeners(
@@ -59,6 +74,12 @@ public class BukkitCorePlugin extends JavaPlugin {
 
     private <T> void registerTypeAdapters(CommandHandler commandHandler, Class<T> clazz, TypeAdapter<T> typeAdapter) {
         commandHandler.registerTypeAdapter(clazz, typeAdapter);
+    }
+
+    @SneakyThrows
+    private void createConfiguration(Configuration configuration) {
+        configuration.load();
+        configuration.save();
     }
 
     /**

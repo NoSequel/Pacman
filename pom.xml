@@ -11,6 +11,7 @@
     <modules>
         <module>shared</module>
         <module>bukkit</module>
+        <module>config</module>
     </modules>
 
     <properties>

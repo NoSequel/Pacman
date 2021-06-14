@@ -31,6 +31,16 @@ public class ColorUtil {
     }};
 
     /**
+     * Translate a string's colors to bukkit's '&' char
+     *
+     * @param string the string to translate
+     * @return the translated string
+     */
+    public String translate(String string) {
+        return ChatColor.translateAlternateColorCodes('&', string);
+    }
+
+    /**
      * Get a {@link ChatColor} object by a {@link Rank}
      *
      * @param rank the rank to get the color by

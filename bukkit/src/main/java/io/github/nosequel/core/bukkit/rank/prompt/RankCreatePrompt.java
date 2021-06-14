@@ -1,6 +1,8 @@
 package io.github.nosequel.core.bukkit.rank.prompt;
 
+import io.github.nosequel.core.bukkit.config.impl.MessageConfiguration;
 import io.github.nosequel.core.bukkit.rank.menu.editor.RankEditorMenu;
+import io.github.nosequel.core.bukkit.util.ColorUtil;
 import io.github.nosequel.core.shared.prompt.ChatPrompt;
 import io.github.nosequel.core.shared.prompt.ChatPromptResult;
 import io.github.nosequel.core.shared.rank.Rank;
@@ -23,7 +25,7 @@ public class RankCreatePrompt implements ChatPrompt<RankHandler> {
      */
     @Override
     public String getPromptText(UUID player, RankHandler value) {
-        return ChatColor.YELLOW + "Please type a name for the rank to start with the process.";
+        return ColorUtil.translate(MessageConfiguration.RANK_START_CREATING);
     }
 
     /**
@@ -42,8 +44,9 @@ public class RankCreatePrompt implements ChatPrompt<RankHandler> {
         value.register(rank);
 
         if(player != null) {
-            player.sendMessage(ChatColor.YELLOW + "You have created a new rank with the name " + message + ".");
-            player.sendMessage(ChatColor.YELLOW + "Opening a menu so you can edit this rank.");
+            player.sendMessage(ColorUtil.translate(MessageConfiguration.RANK_CREATED
+                    .replace("$rank", rank.getDisplayName())
+            ));
 
             new RankEditorMenu(player, rank).updateMenu();
         }

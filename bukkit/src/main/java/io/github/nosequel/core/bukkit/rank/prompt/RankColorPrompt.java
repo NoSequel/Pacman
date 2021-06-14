@@ -1,6 +1,8 @@
 package io.github.nosequel.core.bukkit.rank.prompt;
 
+import io.github.nosequel.core.bukkit.config.impl.MessageConfiguration;
 import io.github.nosequel.core.bukkit.rank.menu.editor.RankEditorMenu;
+import io.github.nosequel.core.bukkit.util.ColorUtil;
 import io.github.nosequel.core.shared.prompt.ChatPrompt;
 import io.github.nosequel.core.shared.prompt.ChatPromptResult;
 import io.github.nosequel.core.shared.rank.Rank;
@@ -22,7 +24,7 @@ public class RankColorPrompt implements ChatPrompt<Rank> {
      */
     @Override
     public String getPromptText(UUID player, Rank value) {
-        return ChatColor.YELLOW + "Type the prefix to update the rank's color value to in the chat.";
+        return ColorUtil.translate(MessageConfiguration.RANK_START_SETTING_COLOR);
     }
 
     /**
@@ -40,7 +42,11 @@ public class RankColorPrompt implements ChatPrompt<Rank> {
         value.setColor(message);
 
         if (player != null) {
-            player.sendMessage(ChatColor.YELLOW + "You updated the color of the rank to " + message + ".");
+            player.sendMessage(ColorUtil.translate(MessageConfiguration.RANK_SET_COLOR
+                    .replace("$rank", value.getDisplayName())
+                    .replace("$color", ColorUtil.getColorByRank(value) + ColorUtil.getColorByRank(value).name())
+            ));
+
             new RankEditorMenu(player, value).updateMenu();
         }
 
