@@ -1,9 +1,12 @@
 package io.github.nosequel.core.shared.rank;
 
+import io.github.nosequel.core.shared.CoreConstants;
 import io.github.nosequel.core.shared.rank.metadata.Metadata;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 
+import java.io.Writer;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -22,6 +25,17 @@ public class RankHandler {
         for (Rank rank : this.ranks) {
             this.repository.update(rank, rank.getUniqueId().toString());
         }
+    }
+
+    /**
+     * Export all ranks to a file
+     *
+     * @param writer the writer to use to write the file to
+     */
+    @SneakyThrows
+    public void exportRanks(Writer writer) {
+        CoreConstants.GSON.toJson(this.ranks, writer);
+        writer.close();
     }
 
     /**

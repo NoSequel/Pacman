@@ -64,4 +64,15 @@ public class Expirable {
 
         return !this.expired;
     }
+
+    public void handleActivityToggle() {
+        if (!this.isActive()) {
+            this.expired = false;
+            this.expirationData = null;
+            this.duration = -1L;
+        } else {
+            this.expired = true;
+            this.expirationData = new ExpirationData("Expired", System.currentTimeMillis());
+        }
+    }
 }

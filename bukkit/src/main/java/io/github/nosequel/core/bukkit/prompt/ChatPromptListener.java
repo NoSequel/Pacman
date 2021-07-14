@@ -1,14 +1,13 @@
 package io.github.nosequel.core.bukkit.prompt;
 
 import io.github.nosequel.core.shared.CoreAPI;
-import io.github.nosequel.core.shared.grants.Grant;
 import io.github.nosequel.core.shared.grants.GrantHandler;
 import io.github.nosequel.core.shared.prompt.ChatPromptData;
 import io.github.nosequel.core.shared.prompt.ChatPromptHandler;
 import io.github.nosequel.core.shared.prompt.ChatPromptResult;
 import io.github.nosequel.core.shared.rank.Rank;
-import lombok.RequiredArgsConstructor;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

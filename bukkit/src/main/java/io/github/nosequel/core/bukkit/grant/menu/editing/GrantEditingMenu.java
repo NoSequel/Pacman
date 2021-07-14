@@ -1,5 +1,6 @@
 package io.github.nosequel.core.bukkit.grant.menu.editing;
 
+import io.github.nosequel.core.bukkit.grant.menu.editing.activity.GrantActivityEditing;
 import io.github.nosequel.core.bukkit.grant.menu.editing.duration.GrantEditDurationMenu;
 import io.github.nosequel.core.bukkit.grant.menu.editing.reason.GrantEditReasonMenu;
 import io.github.nosequel.core.bukkit.util.InventoryActionWrapper;
@@ -27,10 +28,15 @@ public class GrantEditingMenu extends Menu {
             this.buttons[i] = new Button(this.getFillerType());
         }
 
-        this.buttons[3] = new Button(Material.WATCH)
+        this.buttons[2] = new Button(Material.WATCH)
                 .setDisplayName(ChatColor.GOLD + "Change Duration")
                 .setLore(new String[]{ChatColor.YELLOW + "Current: " + ChatColor.GOLD + new Date(grant.getStart() + grant.getDuration())})
                 .setClickAction(InventoryActionWrapper.closeInventoryWrapper(event -> new GrantEditDurationMenu(this.getPlayer(), this.grant).updateMenu()));
+
+        this.buttons[4] = new Button(Material.LEVER)
+                .setDisplayName(ChatColor.GOLD + "Change Activity")
+                .setLore(new String[]{ChatColor.YELLOW + "Current: " + ChatColor.GOLD + grant.isActive()})
+                .setClickAction(InventoryActionWrapper.closeInventoryWrapper(event -> new GrantActivityEditing(this.getPlayer(), this.grant).updateMenu()));
 
         this.buttons[6] = new Button(Material.NAME_TAG)
                 .setDisplayName(ChatColor.GOLD + "Change Reason")

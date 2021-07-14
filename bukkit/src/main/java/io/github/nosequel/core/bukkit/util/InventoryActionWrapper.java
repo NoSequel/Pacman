@@ -1,5 +1,6 @@
 package io.github.nosequel.core.bukkit.util;
 
+import io.github.nosequel.menu.Menu;
 import lombok.experimental.UtilityClass;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -21,6 +22,16 @@ public class InventoryActionWrapper {
             event.setCancelled(true);
             event.getWhoClicked().closeInventory();
 
+            consumer.accept(event);
+        };
+    }
+
+
+    public Consumer<InventoryClickEvent> updateInventoryWrapper(Consumer<InventoryClickEvent> consumer, Menu menu) {
+        return event -> {
+            event.setCancelled(true);
+
+            menu.updateMenu();
             consumer.accept(event);
         };
     }
