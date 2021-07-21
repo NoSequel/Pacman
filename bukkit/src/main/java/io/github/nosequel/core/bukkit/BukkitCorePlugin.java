@@ -44,7 +44,8 @@ public class BukkitCorePlugin extends JavaPlugin {
                 "pacman",
                 "",
                 "",
-                false));
+                false
+        ));
 
         this.coreAPI.setPromptHandler(new BukkitChatPromptHandler());
         this.coreAPI.setLogger(new BukkitLogger());
@@ -94,15 +95,15 @@ public class BukkitCorePlugin extends JavaPlugin {
 
     @SneakyThrows
     private void createConfiguration(File file, Configuration configuration) {
-        if(!file.getParentFile().exists() && file.getParentFile().mkdirs()) {
+        if (!file.getParentFile().exists() && file.getParentFile().mkdirs()) {
             System.out.println("Created parent files.");
         }
 
-        if(!file.exists() && file.createNewFile()) {
+        if (!file.exists() && file.createNewFile()) {
             System.out.println("Creating new configuration with name \"" + file.getName() + "\"");
         }
 
-        if(!file.exists()) {
+        if (!file.exists()) {
             System.out.println("File does not exist.");
         }
 
