@@ -23,12 +23,13 @@ public class CoreAPI {
     private Logger logger;
     private ChatPromptHandler promptHandler;
 
-    private DatabaseHandler databaseHandler;
+    private final DatabaseHandler databaseHandler;
     private RankHandler rankHandler;
     private GrantHandler grantHandler;
 
-    public CoreAPI() {
+    public CoreAPI(DatabaseHandler databaseHandler) {
         coreAPI = this;
+        this.databaseHandler = databaseHandler;
     }
 
     public void enable() {
@@ -36,7 +37,6 @@ public class CoreAPI {
             throw new IllegalStateException("Not all required fields are set within the CoreAPI class.");
         }
 
-        this.databaseHandler = new MongoDatabaseHandler("127.0.0.1", 27017, "pacman", "", "", false);
         this.rankHandler = new RankHandler(new RankRepository(this.databaseHandler));
         this.grantHandler = new GrantHandler(new GrantHandler.GrantRepository(this.databaseHandler));
 

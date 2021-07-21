@@ -5,6 +5,7 @@ import io.github.nosequel.command.adapter.TypeAdapter;
 import io.github.nosequel.command.bukkit.BukkitCommandHandler;
 import io.github.nosequel.config.Configuration;
 import io.github.nosequel.core.bukkit.config.BukkitConfigurationFile;
+import io.github.nosequel.core.bukkit.config.impl.DatabaseConfiguration;
 import io.github.nosequel.core.bukkit.config.impl.MessageConfiguration;
 import io.github.nosequel.core.bukkit.data.TemporaryPlayerObject;
 import io.github.nosequel.core.bukkit.data.adapter.TemporaryPlayerTypeAdapter;
@@ -15,6 +16,7 @@ import io.github.nosequel.core.bukkit.prompt.ChatPromptListener;
 import io.github.nosequel.core.bukkit.rank.command.ListCommand;
 import io.github.nosequel.core.bukkit.rank.command.RankCommand;
 import io.github.nosequel.core.shared.CoreAPI;
+import io.github.nosequel.core.shared.database.mongo.MongoDatabaseHandler;
 import io.github.nosequel.menu.MenuHandler;
 import lombok.SneakyThrows;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -25,11 +27,25 @@ import java.io.File;
 
 public class BukkitCorePlugin extends JavaPlugin {
 
-    private final CoreAPI coreAPI = new CoreAPI();
+    private CoreAPI coreAPI;
 
     @SneakyThrows
     @Override
     public void onEnable() {
+        final File databaseFile = new File(this.getDataFolder(), "database.yml");
+
+        this.createConfiguration(databaseFile, new DatabaseConfiguration(new BukkitConfigurationFile(
+                databaseFile,
+                YamlConfiguration.loadConfiguration(databaseFile)
+        )));
+
+        this.coreAPI = new CoreAPI(new MongoDatabaseHandler(DatabaseConfiguration.HOSTNAME,
+                DatabaseConfiguration.PORT,
+                "pacman",
+                "",
+                "",
+                false));
+
         this.coreAPI.setPromptHandler(new BukkitChatPromptHandler());
         this.coreAPI.setLogger(new BukkitLogger());
 
@@ -38,7 +54,7 @@ public class BukkitCorePlugin extends JavaPlugin {
         // register configurations
         final File file = new File(this.getDataFolder(), "lang.yml");
 
-        this.createConfiguration(new MessageConfiguration(new BukkitConfigurationFile(
+        this.createConfiguration(file, new MessageConfiguration(new BukkitConfigurationFile(
                 file,
                 YamlConfiguration.loadConfiguration(file)
         )));
@@ -77,7 +93,19 @@ public class BukkitCorePlugin extends JavaPlugin {
     }
 
     @SneakyThrows
-    private void createConfiguration(Configuration configuration) {
+    private void createConfiguration(File file, Configuration configuration) {
+        if(!file.getParentFile().exists() && file.getParentFile().mkdirs()) {
+            System.out.println("Created parent files.");
+        }
+
+        if(!file.exists() && file.createNewFile()) {
+            System.out.println("Creating new configuration with name \"" + file.getName() + "\"");
+        }
+
+        if(!file.exists()) {
+            System.out.println("File does not exist.");
+        }
+
         configuration.load();
         configuration.save();
     }
