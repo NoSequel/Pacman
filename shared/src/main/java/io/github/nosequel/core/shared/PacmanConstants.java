@@ -7,7 +7,7 @@ import com.google.gson.LongSerializationPolicy;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-public class CoreConstants {
+public class PacmanConstants {
 
     public JsonParser PARSER = new JsonParser();
     public Gson GSON = new GsonBuilder()

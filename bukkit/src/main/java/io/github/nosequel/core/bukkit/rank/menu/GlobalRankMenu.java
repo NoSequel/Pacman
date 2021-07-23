@@ -5,7 +5,7 @@ import io.github.nosequel.core.bukkit.rank.prompt.RankCreatePrompt;
 import io.github.nosequel.core.bukkit.util.ColorUtil;
 import io.github.nosequel.core.bukkit.util.InventoryActionWrapper;
 import io.github.nosequel.core.shared.prompt.ChatPromptHandler;
-import io.github.nosequel.core.shared.CoreAPI;
+import io.github.nosequel.core.shared.PacmanAPI;
 import io.github.nosequel.core.shared.rank.Rank;
 import io.github.nosequel.core.shared.rank.RankHandler;
 import io.github.nosequel.menu.buttons.Button;
@@ -20,8 +20,8 @@ import java.util.function.Consumer;
 
 public class GlobalRankMenu extends PaginatedMenu {
 
-    private final RankHandler rankHandler = CoreAPI.getCoreAPI().getRankHandler();
-    private final ChatPromptHandler promptHandler = CoreAPI.getCoreAPI().getPromptHandler();
+    private final RankHandler rankHandler = PacmanAPI.getPacmanAPI().getRankHandler();
+    private final ChatPromptHandler promptHandler = PacmanAPI.getPacmanAPI().getPromptHandler();
 
     public GlobalRankMenu(Player player) {
         super(player, "Rank Editor", 18);

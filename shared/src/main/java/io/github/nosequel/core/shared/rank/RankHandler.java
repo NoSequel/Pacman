@@ -1,6 +1,6 @@
 package io.github.nosequel.core.shared.rank;
 
-import io.github.nosequel.core.shared.CoreConstants;
+import io.github.nosequel.core.shared.PacmanConstants;
 import io.github.nosequel.core.shared.rank.metadata.Metadata;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +34,7 @@ public class RankHandler {
      */
     @SneakyThrows
     public void exportRanks(Writer writer) {
-        CoreConstants.GSON.toJson(this.ranks, writer);
+        PacmanConstants.GSON.toJson(this.ranks, writer);
         writer.close();
     }
 

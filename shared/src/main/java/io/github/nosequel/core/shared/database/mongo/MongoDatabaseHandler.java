@@ -8,7 +8,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.UpdateOptions;
-import io.github.nosequel.core.shared.CoreConstants;
+import io.github.nosequel.core.shared.PacmanConstants;
 import io.github.nosequel.core.shared.database.DatabaseHandler;
 import org.bson.Document;
 
@@ -65,7 +65,7 @@ public class MongoDatabaseHandler implements DatabaseHandler {
 
             System.out.println("hi");
             for (Document document : collection.find()) {
-                objects.add(CoreConstants.PARSER.parse(document.toJson()).getAsJsonObject());
+                objects.add(PacmanConstants.PARSER.parse(document.toJson()).getAsJsonObject());
             }
 
             return objects;
@@ -89,7 +89,7 @@ public class MongoDatabaseHandler implements DatabaseHandler {
                 return null;
             }
 
-            return CoreConstants.PARSER.parse(document.toJson()).getAsJsonObject();
+            return PacmanConstants.PARSER.parse(document.toJson()).getAsJsonObject();
         });
     }
 

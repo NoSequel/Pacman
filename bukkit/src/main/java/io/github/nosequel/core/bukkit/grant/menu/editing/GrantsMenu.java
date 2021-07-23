@@ -2,7 +2,7 @@ package io.github.nosequel.core.bukkit.grant.menu.editing;
 
 import io.github.nosequel.core.bukkit.data.TemporaryPlayerObject;
 import io.github.nosequel.core.bukkit.util.InventoryActionWrapper;
-import io.github.nosequel.core.shared.CoreAPI;
+import io.github.nosequel.core.shared.PacmanAPI;
 import io.github.nosequel.core.shared.expirable.ExpirationData;
 import io.github.nosequel.core.shared.grants.Grant;
 import io.github.nosequel.core.shared.grants.GrantHandler;
@@ -23,7 +23,7 @@ import java.util.List;
 public class GrantsMenu extends PaginatedMenu {
 
     private final TemporaryPlayerObject target;
-    private final GrantHandler grantHandler = CoreAPI.getCoreAPI().getGrantHandler();
+    private final GrantHandler grantHandler = PacmanAPI.getPacmanAPI().getGrantHandler();
 
     public GrantsMenu(Player player, TemporaryPlayerObject target) {
         super(player, "Viewing grants", 18);

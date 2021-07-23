@@ -1,6 +1,6 @@
 package io.github.nosequel.core.shared.grants;
 
-import io.github.nosequel.core.shared.CoreAPI;
+import io.github.nosequel.core.shared.PacmanAPI;
 import io.github.nosequel.core.shared.expirable.Expirable;
 import io.github.nosequel.core.shared.rank.Rank;
 import io.github.nosequel.core.shared.rank.RankHandler;
@@ -54,7 +54,7 @@ public class Grant extends Expirable {
      * </p>
      */
     public Rank getRank() {
-        final RankHandler rankHandler = CoreAPI.getCoreAPI().getRankHandler();
+        final RankHandler rankHandler = PacmanAPI.getPacmanAPI().getRankHandler();
         final Optional<Rank> rank = rankHandler.find(this.rankId);
 
         return rank.orElseGet(() -> rankHandler.findDefault().get(0));

@@ -1,7 +1,7 @@
 package io.github.nosequel.core.shared.repository;
 
 import com.google.gson.JsonObject;
-import io.github.nosequel.core.shared.CoreConstants;
+import io.github.nosequel.core.shared.PacmanConstants;
 import io.github.nosequel.core.shared.database.DatabaseHandler;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +32,7 @@ public abstract class BaseRepository<T> implements Repository<T> {
 
             try {
                 for (JsonObject jsonObject : handler.retrieveAll(this.collectionName).get()) {
-                    set.add(CoreConstants.GSON.fromJson(jsonObject, this.getType()));
+                    set.add(PacmanConstants.GSON.fromJson(jsonObject, this.getType()));
                 }
             } catch (InterruptedException | ExecutionException exception) {
                 exception.printStackTrace();
@@ -52,7 +52,7 @@ public abstract class BaseRepository<T> implements Repository<T> {
     public CompletableFuture<T> retrieve(String id) {
         return CompletableFuture.supplyAsync(() -> {
             try {
-                return CoreConstants.GSON.fromJson(handler.retrieveOne(id, this.collectionName).get(), this.getType());
+                return PacmanConstants.GSON.fromJson(handler.retrieveOne(id, this.collectionName).get(), this.getType());
             } catch (InterruptedException | ExecutionException exception) {
                 exception.printStackTrace();
             }
@@ -69,7 +69,7 @@ public abstract class BaseRepository<T> implements Repository<T> {
      */
     @Override
     public void update(T value, String id) {
-        this.handler.update(CoreConstants.PARSER.parse(CoreConstants.GSON.toJson(value)).getAsJsonObject(), this.collectionName, id);
+        this.handler.update(PacmanConstants.PARSER.parse(PacmanConstants.GSON.toJson(value)).getAsJsonObject(), this.collectionName, id);
     }
 
     /**

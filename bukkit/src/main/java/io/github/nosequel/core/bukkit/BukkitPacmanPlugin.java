@@ -4,18 +4,17 @@ import io.github.nosequel.command.CommandHandler;
 import io.github.nosequel.command.adapter.TypeAdapter;
 import io.github.nosequel.command.bukkit.BukkitCommandHandler;
 import io.github.nosequel.config.Configuration;
+import io.github.nosequel.core.bukkit.command.LinuxCommand;
 import io.github.nosequel.core.bukkit.config.BukkitConfigurationFile;
 import io.github.nosequel.core.bukkit.config.impl.DatabaseConfiguration;
 import io.github.nosequel.core.bukkit.config.impl.MessageConfiguration;
 import io.github.nosequel.core.bukkit.data.TemporaryPlayerObject;
 import io.github.nosequel.core.bukkit.data.adapter.TemporaryPlayerTypeAdapter;
 import io.github.nosequel.core.bukkit.grant.command.GrantCommand;
-import io.github.nosequel.core.bukkit.logger.BukkitLogger;
-import io.github.nosequel.core.bukkit.prompt.BukkitChatPromptHandler;
 import io.github.nosequel.core.bukkit.prompt.ChatPromptListener;
 import io.github.nosequel.core.bukkit.rank.command.ListCommand;
 import io.github.nosequel.core.bukkit.rank.command.RankCommand;
-import io.github.nosequel.core.shared.CoreAPI;
+import io.github.nosequel.core.shared.PacmanAPI;
 import io.github.nosequel.core.shared.database.mongo.MongoDatabaseHandler;
 import io.github.nosequel.menu.MenuHandler;
 import lombok.SneakyThrows;
@@ -25,9 +24,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 
-public class BukkitCorePlugin extends JavaPlugin {
+public class BukkitPacmanPlugin extends JavaPlugin {
 
-    private CoreAPI coreAPI;
+    private PacmanAPI pacmanAPI;
 
     @SneakyThrows
     @Override
@@ -39,18 +38,13 @@ public class BukkitCorePlugin extends JavaPlugin {
                 YamlConfiguration.loadConfiguration(databaseFile)
         )));
 
-        this.coreAPI = new CoreAPI(new MongoDatabaseHandler(DatabaseConfiguration.HOSTNAME,
+        this.pacmanAPI = new PacmanAPI(new BukkitPacmanImpl(new MongoDatabaseHandler(DatabaseConfiguration.HOSTNAME,
                 DatabaseConfiguration.PORT,
                 "pacman",
                 "",
                 "",
                 false
-        ));
-
-        this.coreAPI.setPromptHandler(new BukkitChatPromptHandler());
-        this.coreAPI.setLogger(new BukkitLogger());
-
-        this.coreAPI.enable();
+        )));
 
         // register configurations
         final File file = new File(this.getDataFolder(), "lang.yml");
@@ -73,6 +67,7 @@ public class BukkitCorePlugin extends JavaPlugin {
         this.registerCommands(commandHandler, new RankCommand());
         this.registerCommands(commandHandler, new GrantCommand());
         this.registerCommands(commandHandler, new ListCommand());
+        this.registerCommands(commandHandler, new LinuxCommand());
 
         // register menu handler
         new MenuHandler(this);
@@ -80,7 +75,7 @@ public class BukkitCorePlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        this.coreAPI.disable();
+        this.pacmanAPI.getPacman().save();
     }
 
     private void registerCommands(CommandHandler commandHandler, Object... objects) {

@@ -15,10 +15,13 @@ public class MessageConfiguration extends Configuration {
     @Configurable(path = "messages.ranks.creation.created")
     public static String RANK_CREATED = "&eYou have &acreated &ethe &f$rank &erank, opening a new menu to edit this rank.";
 
-    @Configurable(path = "messages.rank.color.started")
+    @Configurable(path = "messages.ranks.deleted")
+    public static String RANK_DELETED = "&eYou have &cdeleted &ethe &f$rank &erank.";
+
+    @Configurable(path = "messages.ranks.color.started")
     public static String RANK_START_SETTING_COLOR = "&eType the prefix to update the rank's color value to in the chat.";
 
-    @Configurable(path = "messages.rank.color.set")
+    @Configurable(path = "messages.ranks.color.set")
     public static String RANK_SET_COLOR = "&eYou have set the color of the &f$rank rank &eto &f$color";
 
     @SneakyThrows

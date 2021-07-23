@@ -1,12 +1,13 @@
 package io.github.nosequel.core.bukkit.rank.menu.editor;
 
+import io.github.nosequel.core.bukkit.config.impl.MessageConfiguration;
 import io.github.nosequel.core.bukkit.rank.menu.editor.metadata.RankMetadataMenu;
 import io.github.nosequel.core.bukkit.rank.prompt.RankColorPrompt;
 import io.github.nosequel.core.bukkit.rank.prompt.RankPrefixPrompt;
 import io.github.nosequel.core.bukkit.rank.prompt.RankSuffixPrompt;
 import io.github.nosequel.core.bukkit.rank.prompt.RankWeightPrompt;
 import io.github.nosequel.core.bukkit.util.ColorUtil;
-import io.github.nosequel.core.shared.CoreAPI;
+import io.github.nosequel.core.shared.PacmanAPI;
 import io.github.nosequel.core.shared.prompt.ChatPromptHandler;
 import io.github.nosequel.core.shared.rank.Rank;
 import io.github.nosequel.core.shared.rank.metadata.Metadata;
@@ -149,13 +150,36 @@ public enum RankEditorType {
                 new RankMetadataMenu(player, rank).updateMenu();
             };
         }
+    },
+
+    DELETE(ChatColor.GOLD + "Delete Rank", Material.REDSTONE) {
+        @Override
+        public String[] getLore(Rank rank) {
+            return new String[]{
+                    ChatColor.GRAY + "Click here to delete the current rank."
+            };
+        }
+
+        @Override
+        public Consumer<InventoryClickEvent> getAction(Rank rank, Menu menu) {
+            return event -> {
+                final Player player = (Player) event.getWhoClicked();
+
+
+                event.setCancelled(true);
+                player.closeInventory();
+                player.sendMessage(ColorUtil.translate(MessageConfiguration.RANK_DELETED));
+
+                PacmanAPI.getPacmanAPI().getRankHandler().delete(rank);
+            };
+        }
     };
 
 
     private final String displayName;
     private final Material material;
 
-    public final ChatPromptHandler promptHandler = CoreAPI.getCoreAPI().getPromptHandler();
+    public final ChatPromptHandler promptHandler = PacmanAPI.getPacmanAPI().getPromptHandler();
 
     /**
      * Get the lore to display inside of the button

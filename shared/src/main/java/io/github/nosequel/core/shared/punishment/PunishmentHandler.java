@@ -16,6 +16,12 @@ public class PunishmentHandler {
     private final PunishmentActionHandler actionHandler;
     private final List<Punishment> punishments = new ArrayList<>();
 
+    public void load() {
+    }
+
+    public void save() {
+    }
+
     /**
      * Find the most relevant punishment for a target
      *
@@ -82,5 +88,7 @@ public class PunishmentHandler {
 
         this.repository.update(punishment, punishment.getUniqueId().toString());
         this.punishments.add(punishment);
+
+        this.actionHandler.registerPunishment(punishment);
     }
 }

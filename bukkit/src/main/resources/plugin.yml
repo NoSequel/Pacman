@@ -1,4 +1,4 @@
 name: Pacman-Bukkit
 version: 1.0-SNAPSHOT
 author: NV6
-main: io.github.nosequel.core.bukkit.BukkitCorePlugin
+main: io.github.nosequel.core.bukkit.BukkitPacmanPlugin

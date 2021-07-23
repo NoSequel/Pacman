@@ -1,6 +1,6 @@
 package io.github.nosequel.core.shared.grants;
 
-import io.github.nosequel.core.shared.CoreAPI;
+import io.github.nosequel.core.shared.PacmanAPI;
 import io.github.nosequel.core.shared.database.DatabaseHandler;
 import io.github.nosequel.core.shared.rank.Rank;
 import io.github.nosequel.core.shared.repository.BaseRepository;
@@ -58,7 +58,7 @@ public class GrantHandler {
             }
         }
 
-        for (Rank rank : CoreAPI.getCoreAPI().getDefaultRanks()) {
+        for (Rank rank : PacmanAPI.getPacmanAPI().getRankHandler().findDefault()) {
             this.register(new Grant(uuid, rank.getUniqueId(), UUID.randomUUID(), UUID.randomUUID(), "New player"));
         }
 

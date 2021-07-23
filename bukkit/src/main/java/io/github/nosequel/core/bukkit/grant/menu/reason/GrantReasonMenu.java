@@ -3,7 +3,7 @@ package io.github.nosequel.core.bukkit.grant.menu.reason;
 import io.github.nosequel.core.bukkit.data.TemporaryPlayerObject;
 import io.github.nosequel.core.bukkit.grant.menu.BaseHeaderMenu;
 import io.github.nosequel.core.bukkit.grant.menu.duration.GrantDurationMenu;
-import io.github.nosequel.core.shared.CoreAPI;
+import io.github.nosequel.core.shared.PacmanAPI;
 import io.github.nosequel.core.shared.grants.Grant;
 import io.github.nosequel.core.shared.grants.GrantHandler;
 import io.github.nosequel.core.shared.rank.Rank;
@@ -26,7 +26,7 @@ public class GrantReasonMenu extends BaseHeaderMenu {
 
     private final TemporaryPlayerObject target;
 
-    private final GrantHandler grantHandler = CoreAPI.getCoreAPI().getGrantHandler();
+    private final GrantHandler grantHandler = PacmanAPI.getPacmanAPI().getGrantHandler();
 
     public GrantReasonMenu(Player player, TemporaryPlayerObject target, Rank rank, long duration) {
         super(player, "Select a grant reason", 9*3);

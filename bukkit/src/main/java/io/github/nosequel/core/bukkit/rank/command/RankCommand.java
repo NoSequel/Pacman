@@ -4,7 +4,7 @@ import io.github.nosequel.command.annotation.Command;
 import io.github.nosequel.command.annotation.Subcommand;
 import io.github.nosequel.command.bukkit.executor.BukkitCommandExecutor;
 import io.github.nosequel.core.bukkit.rank.menu.GlobalRankMenu;
-import io.github.nosequel.core.shared.CoreAPI;
+import io.github.nosequel.core.shared.PacmanAPI;
 import io.github.nosequel.core.shared.rank.RankHandler;
 import lombok.SneakyThrows;
 
@@ -13,7 +13,7 @@ import java.nio.file.Paths;
 
 public class RankCommand {
 
-    private final RankHandler rankHandler = CoreAPI.getCoreAPI().getRankHandler();
+    private final RankHandler rankHandler = PacmanAPI.getPacmanAPI().getRankHandler();
 
     @Command(label = "rank", permission = "pacman.ranks")
     public void rank(BukkitCommandExecutor executor) {

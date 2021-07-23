@@ -3,7 +3,7 @@ package io.github.nosequel.core.bukkit.grant.menu;
 import io.github.nosequel.core.bukkit.data.TemporaryPlayerObject;
 import io.github.nosequel.core.bukkit.grant.menu.duration.GrantDurationMenu;
 import io.github.nosequel.core.bukkit.util.ColorUtil;
-import io.github.nosequel.core.shared.CoreAPI;
+import io.github.nosequel.core.shared.PacmanAPI;
 import io.github.nosequel.core.shared.rank.Rank;
 import io.github.nosequel.core.shared.rank.RankHandler;
 import io.github.nosequel.core.shared.rank.metadata.Metadata;
@@ -21,7 +21,7 @@ import java.util.function.Consumer;
 public class GrantMenu extends PaginatedMenu {
 
     private final TemporaryPlayerObject target;
-    private final RankHandler rankHandler = CoreAPI.getCoreAPI().getRankHandler();
+    private final RankHandler rankHandler = PacmanAPI.getPacmanAPI().getRankHandler();
 
     public GrantMenu(Player player, TemporaryPlayerObject target) {
         super(player, "Granting to player...", 18);
