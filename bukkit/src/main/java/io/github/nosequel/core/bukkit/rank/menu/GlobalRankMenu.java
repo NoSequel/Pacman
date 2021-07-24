@@ -1,7 +1,7 @@
 package io.github.nosequel.core.bukkit.rank.menu;
 
 import io.github.nosequel.core.bukkit.rank.menu.editor.RankEditorMenu;
-import io.github.nosequel.core.bukkit.rank.prompt.RankCreatePrompt;
+import io.github.nosequel.core.bukkit.rank.prompt.impl.RankCreatePrompt;
 import io.github.nosequel.core.bukkit.util.ColorUtil;
 import io.github.nosequel.core.bukkit.util.InventoryActionWrapper;
 import io.github.nosequel.core.shared.prompt.ChatPromptHandler;

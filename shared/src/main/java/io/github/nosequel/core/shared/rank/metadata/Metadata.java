@@ -10,7 +10,8 @@ public enum Metadata {
     DEFAULT("§fDefault", "GRASS"),
     DONATOR("§aDonator", "EMERALD"),
     STAFF("§9Staff", "DIAMOND"),
-    HIDDEN("§7Hidden", "GLASS");
+    HIDDEN("§7Hidden", "GLASS"),
+    DELETED("§4Deleted", "AIR");
 
     private final String displayName;
     private final String displayItem;

@@ -1,6 +1,7 @@
-package io.github.nosequel.core.bukkit.rank.prompt;
+package io.github.nosequel.core.bukkit.rank.prompt.impl;
 
 import io.github.nosequel.core.bukkit.rank.menu.editor.RankEditorMenu;
+import io.github.nosequel.core.bukkit.rank.prompt.RankPrompt;
 import io.github.nosequel.core.shared.prompt.ChatPrompt;
 import io.github.nosequel.core.shared.prompt.ChatPromptResult;
 import io.github.nosequel.core.shared.rank.Rank;
@@ -10,7 +11,7 @@ import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
-public class RankPrefixPrompt implements ChatPrompt<Rank> {
+public class RankPrefixPrompt extends RankPrompt {
 
     /**
      * Get the prompt text to send to the player
@@ -44,9 +45,6 @@ public class RankPrefixPrompt implements ChatPrompt<Rank> {
             new RankEditorMenu(player, value).updateMenu();
         }
 
-        return new ChatPromptResult(
-                "",
-                true
-        );
+        return super.handleInput(uniqueId, message, value);
     }
 }

@@ -6,6 +6,12 @@ import io.github.nosequel.config.annotation.Configurable;
 
 public class DatabaseConfiguration extends Configuration {
 
+    @Configurable(path = "database.sync.hostname")
+    public static String SYNC_HOSTNAME = "127.0.0.1";
+
+    @Configurable(path = "database.sync.port")
+    public static Integer SYNC_PORT = 6379;
+
     @Configurable(path = "database.hostname")
     public static String HOSTNAME = "127.0.0.1";
 

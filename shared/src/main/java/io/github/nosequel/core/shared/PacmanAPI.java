@@ -1,6 +1,7 @@
 package io.github.nosequel.core.shared;
 
 import io.github.nosequel.core.shared.database.DatabaseHandler;
+import io.github.nosequel.core.shared.database.SyncHandler;
 import io.github.nosequel.core.shared.grants.GrantHandler;
 import io.github.nosequel.core.shared.prompt.ChatPromptHandler;
 import io.github.nosequel.core.shared.rank.RankHandler;
@@ -16,6 +17,8 @@ public class PacmanAPI {
     private final PacmanImpl pacman;
 
     private final DatabaseHandler databaseHandler;
+    private final SyncHandler syncHandler;
+
     private final GrantHandler grantHandler;
     private final RankHandler rankHandler;
     private final ChatPromptHandler promptHandler;
@@ -30,6 +33,8 @@ public class PacmanAPI {
         pacmanAPI = this;
 
         this.pacman = pacman;
+
+        this.syncHandler = pacman.getSyncHandler();
         this.databaseHandler = pacman.getDatabaseHandler();
         this.grantHandler = pacman.getGrantHandler();
         this.rankHandler = pacman.getRankHandler();

@@ -17,9 +17,13 @@ public class PunishmentHandler {
     private final List<Punishment> punishments = new ArrayList<>();
 
     public void load() {
+        this.repository.retrieve().thenAccept(this.punishments::addAll);
     }
 
     public void save() {
+        for (Punishment punishment : this.punishments) {
+            this.repository.update(punishment, punishment.getUniqueId().toString());
+        }
     }
 
     /**
@@ -72,12 +76,34 @@ public class PunishmentHandler {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Expire a {@link Punishment} object with a set expiration data
+     *
+     * @param punishment the punishment to expire
+     * @param data       the data to expire the punishment with
+     */
     public void expirePunishment(Punishment punishment, ExpirationData data) {
         if (!this.punishments.contains(punishment)) {
+            this.registerPunishment(punishment);
+        }
 
+        if (punishment.isActive()) {
+            punishment.setExpirationData(data);
+            punishment.setExpired(true);
+
+            this.repository.update(punishment, punishment.getUniqueId().toString());
+            this.actionHandler.expirePunishment(punishment);
+
+            // todo: redis synchronization
         }
     }
 
+    /**
+     * Register a new punishment to the {@link PunishmentHandler#repository}
+     * field, this updates it to the database and the cache.
+     *
+     * @param punishment the punishment to register
+     */
     public void registerPunishment(Punishment punishment) {
         if (this.punishments.stream().noneMatch(target -> target.getUniqueId().equals(punishment.getUniqueId()))) {
             final Optional<Punishment> relevantPunishment = this.findRelevantPunishment(punishment.getTarget(), punishment.getPunishmentType());
@@ -90,5 +116,7 @@ public class PunishmentHandler {
         this.punishments.add(punishment);
 
         this.actionHandler.registerPunishment(punishment);
+
+        // todo: redis synchronization
     }
 }

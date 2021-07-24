@@ -1,12 +1,16 @@
 package io.github.nosequel.core.shared.rank;
 
+import io.github.nosequel.core.shared.PacmanAPI;
 import io.github.nosequel.core.shared.PacmanConstants;
+import io.github.nosequel.core.shared.database.SyncHandler;
 import io.github.nosequel.core.shared.rank.metadata.Metadata;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 
 import java.io.Writer;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -129,5 +133,50 @@ public class RankHandler {
         }
 
         return ranks;
+    }
+
+    /**
+     * Update a {@link Rank} object, including synchronization.
+     *
+     * @param rank the rank to update
+     */
+    public void updateRank(Rank rank) {
+        final SyncHandler syncHandler = PacmanAPI.getPacmanAPI().getSyncHandler();
+
+        if (syncHandler != null) {
+            syncHandler.pushData(rank);
+        }
+
+        this.repository.update(rank, rank.getUniqueId().toString());
+    }
+
+    /**
+     * Replace a rank's fields with new rank's fields.
+     * <p>
+     * This method loops through all methods within the class,
+     * and for every method which starts with "set", it will grab
+     * that method, replace "set" with "get", and change the
+     * field's value to the getter's return value of the target rank.
+     *
+     * @param rank   the rank to update the fields of
+     * @param target the target to get the new field data from
+     */
+    public void replaceRank(Rank rank, Rank target) {
+        for (Method method : rank.getClass().getMethods()) {
+            final String methodName = method.getName();
+
+            if (methodName.startsWith("set")) {
+                try {
+                    final Method getterMethod = rank.getClass().getMethod(methodName.replace(
+                            "set",
+                            "get"
+                    ));
+
+                    method.invoke(rank, getterMethod.invoke(target));
+                } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ignored) {
+
+                }
+            }
+        }
     }
 }

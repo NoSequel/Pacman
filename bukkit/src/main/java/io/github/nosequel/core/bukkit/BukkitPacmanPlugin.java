@@ -15,7 +15,11 @@ import io.github.nosequel.core.bukkit.prompt.ChatPromptListener;
 import io.github.nosequel.core.bukkit.rank.command.ListCommand;
 import io.github.nosequel.core.bukkit.rank.command.RankCommand;
 import io.github.nosequel.core.shared.PacmanAPI;
+import io.github.nosequel.core.shared.database.DatabaseHandler;
+import io.github.nosequel.core.shared.database.SyncHandler;
 import io.github.nosequel.core.shared.database.mongo.MongoDatabaseHandler;
+import io.github.nosequel.core.shared.database.sync.redis.RedisAuthorizationData;
+import io.github.nosequel.core.shared.database.sync.redis.RedisDataSyncHandler;
 import io.github.nosequel.menu.MenuHandler;
 import lombok.SneakyThrows;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -31,20 +35,7 @@ public class BukkitPacmanPlugin extends JavaPlugin {
     @SneakyThrows
     @Override
     public void onEnable() {
-        final File databaseFile = new File(this.getDataFolder(), "database.yml");
-
-        this.createConfiguration(databaseFile, new DatabaseConfiguration(new BukkitConfigurationFile(
-                databaseFile,
-                YamlConfiguration.loadConfiguration(databaseFile)
-        )));
-
-        this.pacmanAPI = new PacmanAPI(new BukkitPacmanImpl(new MongoDatabaseHandler(DatabaseConfiguration.HOSTNAME,
-                DatabaseConfiguration.PORT,
-                "pacman",
-                "",
-                "",
-                false
-        )));
+        this.loadPacmanAPI();
 
         // register configurations
         final File file = new File(this.getDataFolder(), "lang.yml");
@@ -71,6 +62,40 @@ public class BukkitPacmanPlugin extends JavaPlugin {
 
         // register menu handler
         new MenuHandler(this);
+    }
+
+    private void loadPacmanAPI() {
+        final File databaseFile = new File(this.getDataFolder(), "database.yml");
+        final SyncHandler syncHandler = new SyncHandler();
+
+        this.createConfiguration(databaseFile, new DatabaseConfiguration(new BukkitConfigurationFile(
+                databaseFile,
+                YamlConfiguration.loadConfiguration(databaseFile)
+        )));
+
+        syncHandler.setSyncHandler(this.loadSyncHandler(syncHandler));
+
+        this.pacmanAPI = new PacmanAPI(new BukkitPacmanImpl(this.loadDatabaseHandler(), syncHandler));
+    }
+
+    private io.github.nosequel.core.shared.database.sync.SyncHandler loadSyncHandler(SyncHandler syncHandler) {
+        return new RedisDataSyncHandler(syncHandler,
+                new RedisAuthorizationData(
+                        DatabaseConfiguration.SYNC_HOSTNAME,
+                        DatabaseConfiguration.SYNC_PORT,
+                        ""
+                )
+        );
+    }
+
+    private DatabaseHandler loadDatabaseHandler() {
+        return new MongoDatabaseHandler(DatabaseConfiguration.HOSTNAME,
+                DatabaseConfiguration.PORT,
+                "pacman",
+                "",
+                "",
+                false
+        );
     }
 
     @Override

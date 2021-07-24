@@ -2,10 +2,10 @@ package io.github.nosequel.core.bukkit.rank.menu.editor;
 
 import io.github.nosequel.core.bukkit.config.impl.MessageConfiguration;
 import io.github.nosequel.core.bukkit.rank.menu.editor.metadata.RankMetadataMenu;
-import io.github.nosequel.core.bukkit.rank.prompt.RankColorPrompt;
-import io.github.nosequel.core.bukkit.rank.prompt.RankPrefixPrompt;
-import io.github.nosequel.core.bukkit.rank.prompt.RankSuffixPrompt;
-import io.github.nosequel.core.bukkit.rank.prompt.RankWeightPrompt;
+import io.github.nosequel.core.bukkit.rank.prompt.impl.RankColorPrompt;
+import io.github.nosequel.core.bukkit.rank.prompt.impl.RankPrefixPrompt;
+import io.github.nosequel.core.bukkit.rank.prompt.impl.RankSuffixPrompt;
+import io.github.nosequel.core.bukkit.rank.prompt.impl.RankWeightPrompt;
 import io.github.nosequel.core.bukkit.util.ColorUtil;
 import io.github.nosequel.core.shared.PacmanAPI;
 import io.github.nosequel.core.shared.prompt.ChatPromptHandler;

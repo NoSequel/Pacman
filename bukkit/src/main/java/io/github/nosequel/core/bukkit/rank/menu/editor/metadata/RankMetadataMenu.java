@@ -2,7 +2,9 @@ package io.github.nosequel.core.bukkit.rank.menu.editor.metadata;
 
 import io.github.nosequel.core.bukkit.rank.menu.editor.RankEditorMenu;
 import io.github.nosequel.core.bukkit.util.InventoryActionWrapper;
+import io.github.nosequel.core.shared.PacmanAPI;
 import io.github.nosequel.core.shared.rank.Rank;
+import io.github.nosequel.core.shared.rank.RankHandler;
 import io.github.nosequel.core.shared.rank.metadata.Metadata;
 import io.github.nosequel.menu.Menu;
 import io.github.nosequel.menu.buttons.Button;
@@ -18,6 +20,7 @@ import java.util.function.Consumer;
 public class RankMetadataMenu extends Menu {
 
     private final Rank rank;
+    private final RankHandler rankHandler = PacmanAPI.getPacmanAPI().getRankHandler();
 
     public RankMetadataMenu(Player player, Rank rank) {
         super(player, "Edit rank's metadata", 18);
@@ -43,6 +46,7 @@ public class RankMetadataMenu extends Menu {
                     rank.getMetadatum().add(metadata);
                 }
 
+                this.rankHandler.updateRank(rank);
                 this.updateMenu();
             };
 
