@@ -2,11 +2,15 @@ package io.github.nosequel.core.bukkit.util;
 
 import io.github.nosequel.core.shared.rank.Rank;
 import lombok.experimental.UtilityClass;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
+import org.bukkit.OfflinePlayer;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 
 @UtilityClass
 public class ColorUtil {
@@ -29,6 +33,10 @@ public class ColorUtil {
         put(ChatColor.GRAY, DyeColor.GRAY);
         put(ChatColor.DARK_GRAY, DyeColor.GRAY);
     }};
+
+    public String getColoredName(UUID target) {
+        return JavaUtil.ifPresentOrElse(Optional.ofNullable(Bukkit.getOfflinePlayer(target)), OfflinePlayer::getName, player -> ChatColor.DARK_RED + "SERVER");
+    }
 
     /**
      * Translate a string's colors to bukkit's '&' char
